@@ -1,306 +1,373 @@
 # RDBMS Fundamentals & Database Concepts
 
-Welcome to the RDBMS Interview Questions repository. This guide covers everything from core database concepts to advanced design patterns, organized in a Question & Answer format.
+Welcome to the RDBMS Interview Questions repository. This guide consists of 50+ granular topics covering everything from core architecture to advanced analytical design patterns.
 
 ## Table of Contents
 
-1. [Core Database Concepts](#1-core-database-concepts)
-2. [Data Types](#2-data-types)
-3. [Schema, Catalog & Nullability](#3-schema-catalog--nullability)
-4. [Keys & Constraints](#4-keys--constraints)
-5. [Normalization & Denormalization](#5-normalization--denormalization)
-6. [ACID, BASE, and CAP](#6-acid-base-and-cap)
-7. [Indexing](#7-indexing)
-8. [Transaction Management & Concurrency](#8-transaction-management--concurrency)
-9. [Database Design Patterns](#9-database-design-patterns)
+### 1. Database Basics & Architecture
+- 1.1 [What is a Database?](#11-what-is-a-database)
+- 1.2 [What is the difference between DBMS and RDBMS?](#12-what-is-the-difference-between-dbms-and-rdbms)
+- 1.3 [What is the Relational Model and its properties?](#13-what-is-the-relational-model-and-its-properties)
+- 1.4 [What are the benefits of the Relational Model?](#14-what-are-the-benefits-of-the-relational-model)
+- 1.5 [What are Tables, Rows, and Columns?](#15-what-are-tables-rows-and-columns)
+- 1.6 [What is ER (Entity-Relationship) Modeling?](#16-what-is-er-entity-relationship-modeling)
+- 1.7 [What are the types of Relationships (1:1, 1:N, M:N)?](#17-what-are-the-types-of-relationships-11-1n-mn)
+- 1.8 [What is the difference between Logical and Physical Schema?](#18-what-is-the-difference-between-logical-and-physical-schema)
+
+### 2. Data Types & Storage
+- 2.1 [What are the principles for choosing Data Types?](#21-what-are-the-principles-for-choosing-data-types)
+- 2.2 [Numeric Data Types: INT, DECIMAL, vs FLOAT](#22-numeric-data-types-int-decimal-vs-float)
+- 2.3 [String Data Types & Collation (CHAR vs VARCHAR)](#23-string-data-types--collation-char-vs-varchar)
+- 2.4 [Handling Date, Time, and Timezones](#24-handling-date-time-and-timezones)
+- 2.5 [Working with Semi-structured Data (JSON/XML)](#25-working-with-semi-structured-data-jsonxml)
+- 2.6 [Choosing Primary Key Types: BIGINT vs UUID](#26-choosing-primary-key-types-bigint-vs-uuid)
+- 2.7 [Three-Valued Logic and NULL Handling](#27-three-valued-logic-and-null-handling)
+- 2.8 [Binary Data Types: BLOB and BYTEA](#28-binary-data-types-blob-and-bytea)
+
+### 3. Constraints & Integrity
+- 3.1 [What is Entity Integrity (Primary Keys)?](#31-what-is-entity-integrity-primary-keys)
+- 3.2 [What is Referential Integrity (Foreign Keys)?](#32-what-is-referential-integrity-foreign-keys)
+- 3.3 [Foreign Key Actions: CASCADE, SET NULL, RESTRICT](#33-foreign-key-actions-cascade-set-null-restrict)
+- 3.4 [What is Domain Integrity? (CHECK, DEFAULT, NOT NULL)](#34-what-is-domain-integrity-check-default-not-null)
+- 3.5 [Unique Constraints and Business Identifiers](#35-unique-constraints-and-business-identifiers)
+- 3.6 [Assertion and Triggers vs Constraints](#36-assertion-and-triggers-vs-constraints)
+
+### 4. Normalization Deep Dive
+- 4.1 [What is the purpose of Normalization?](#41-what-is-the-purpose-of-normalization)
+- 4.2 [What are Functional Dependencies (FDs)?](#42-what-are-functional-dependencies-fds)
+- 4.3 [1NF: Atomic Values and Repeating Groups](#43-1nf-atomic-values-and-repeating-groups)
+- 4.4 [2NF: Removing Partial Dependencies](#44-2nf-removing-partial-dependencies)
+- 4.5 [3NF: Removing Transitive Dependencies](#45-3nf-removing-transitive-dependencies)
+- 4.6 [BCNF: Boyce–Codd Normal Form](#46-bcnf-boycecodd-normal-form)
+- 4.7 [4NF: Multi-valued Dependencies (MVDs)](#47-4nf-multi-valued-dependencies-mvds)
+- 4.8 [5NF: Join Dependencies (PJ/NF)](#48-5nf-join-dependencies-pjnf)
+- 4.9 [What are Database Anomalies?](#49-what-are-database-anomalies)
+- 4.10 [Denormalization: When and Why?](#410-denormalization-when-and-why)
+- 4.11 [Standard Normalization Workflow](#411-standard-normalization-workflow)
+
+### 5. Transactions & Concurrency
+- 5.1 [ACID Properties Deep Dive](#51-acid-properties-deep-dive)
+- 5.2 [Atomicity: Rollback and WAL](#52-atomicity-rollback-and-wal)
+- 5.3 [Consistency: Database State Invariants](#53-consistency-database-state-invariants)
+- 5.4 [Isolation Levels and ANSI Standards](#54-isolation-levels-and-ansi-standards)
+- 5.5 [Isolation Phenomena: Dirty Read, Phantoms, Write Skew](#55-isolation-phenomena-dirty-read-phantoms-write-skew)
+- 5.6 [Durability: Disk Flushing and Checkpoints](#56-durability-disk-flushing-and-checkpoints)
+- 5.7 [What is MVCC (Multi-Version Concurrency Control)?](#57-what-is-mvcc-multi-version-concurrency-control)
+- 5.8 [Locking Mechanisms: S, X, U, and Intent Locks](#58-locking-mechanisms-s-x-u-and-intent-locks)
+- 5.9 [Deadlocks: Detection and Resolution](#59-deadlocks-detection-and-resolution)
+- 5.10 [Optimistic vs Pessimistic Concurrency](#510-optimistic-vs-pessimistic-concurrency)
+- 5.11 [BASE and Eventual Consistency](#511-base-and-eventual-consistency)
+- 5.12 [The CAP Theorem for Distributed Databases](#512-the-cap-theorem-for-distributed-databases)
+
+### 6. Indexing & Performance
+- 6.1 [How do Indexes work?](#61-how-do-indexes-work)
+- 6.2 [B-Tree vs B+Tree Index Structures](#62-b-tree-vs-bplus-tree-index-structures)
+- 6.3 [Clustered vs Non-Clustered Indexes](#63-clustered-vs-non-clustered-indexes)
+- 6.4 [Composite Indexes: The Leftmost Prefix Rule](#64-composite-indexes-the-leftmost-prefix-rule)
+- 6.5 [What is a Covering Index?](#65-what-is-a-covering-index)
+- 6.6 [SARGability: Writing Index-Optimized Queries](#66-sargability-writing-index-optimized-queries)
+- 6.7 [Full-Text Search and Specialized Indexes (GIN/GiST)](#67-full-text-search-and-specialized-indexes-gingist)
+- 6.8 [Index Fragmentation and Maintenance](#68-index-fragmentation-and-maintenance)
+
+### 7. Database Design Patterns (OLAP)
+- 7.1 [OLTP vs OLAP Architecture](#71-oltp-vs-olap-architecture)
+- 7.2 [Star Schema: Facts and Dimensions](#72-star-schema-facts-and-dimensions)
+- 7.3 [Snowflake Schema: Normalized Dimensions](#73-snowflake-schema-normalized-dimensions)
+- 7.4 [Fact Tables: Transactional vs Snapshot](#74-fact-tables-transactional-vs-snapshot)
+- 7.5 [Dimension Types: Junk, Degenerate, Bridge](#75-dimension-types-junk-degenerate-bridge)
+- 7.6 [SCD Types 1, 2, and 3 (Slowly Changing Dimensions)](#76-scd-types-1-2-and-3-slowly-changing-dimensions)
 
 ---
 
-## 1. Core Database Concepts
+## 1. Database Basics & Architecture
 
-### What is a database?
+### 1.1 What is a Database?
 - A persistent, organized collection of structured data plus metadata enabling efficient storage, retrieval, security, integrity, and performance.
 - **Core components**: data files, catalog (schema metadata), transaction log/WAL, buffer pool, query optimizer, execution engine, lock/MVCC manager, background maintenance (VACUUM, checkpoints, statistics).
 
-### What is the difference between DBMS and RDBMS?
+### 1.2 What is the difference between DBMS and RDBMS?
 - **DBMS**: generic data management; may be hierarchical, network, document, key–value, etc.
 - **RDBMS**: implements the relational model with relations (tables), tuples (rows), attributes (columns), schemas, keys, SQL, ACID, normalization, and declarative constraints.
 - **Practical upshot**: portability of concepts, stricter integrity, transaction guarantees.
 
-### What is the Relational Model?
-- Relation = table; tuple = row; attribute = column; schema = relation definition.
-- **Properties**: set semantics, logical independence, closure (results are relations), declarative algebra (projection, selection, join, union, difference).
-- **Benefits**: predictable constraints and optimizations; decouples logical design from physical storage.
+### 1.3 What is the Relational Model and its properties?
+- **Definition**: A data model based on first-order predicate logic where data is represented as relations (tables).
+- **Properties**: 
+    - **Set Semantics**: Rows are unordered and unique.
+    - **Logical Independence**: The application is decoupled from the physical storage.
+    - **Closure**: The result of a relational operation is itself a relation.
+    - **Declarative Algebra**: Operations like Projection, Selection, Join, Union.
 
-### What are tables, rows, and columns?
-- Tables model entities or relationships; rows are instances; columns are typed attributes with constraints (NOT NULL, CHECK, DEFAULT, UNIQUE, FK).
-- Keys enforce uniqueness; foreign keys enforce relationships; NULL indicates unknown/not applicable.
+### 1.4 What are the benefits of the Relational Model?
+- **Predictability**: Strict schemas ensure data consistency.
+- **Optimization**: The query optimizer can determine the best execution path without programmer intervention.
+- **Decoupling**: Changes to physical storage (indexes, partitions) don't require rewriting application code.
 
-### What is ER modeling?
-- Capture entities, attributes, relationships; specify cardinality and optionality; identify keys.
-- **Mapping**: entities → tables; attributes → columns; identifiers → primary keys; relationships → foreign keys or junction tables.
+### 1.5 What are Tables, Rows, and Columns?
+- **Tables**: Model entities (e.g., Users) or relationships (e.g., Orders).
+- **Rows (Tuples)**: Specific instances of an entity.
+- **Columns (Attributes)**: Typed properties of the entity (e.g., Email, BirthDate) with constraints like `NOT NULL`.
 
-### What are the different relationship types (1:1, 1:N, M:N)?
-- **1:1**: unique FK or merge tables (when lifecycles coincide).
-- **1:N**: FK on N-side referencing 1-side PK; consider ON DELETE/UPDATE actions (CASCADE, SET NULL, RESTRICT/NO ACTION).
-- **M:N**: junction/bridge table with two FKs; composite PK or surrogate key plus UNIQUE pair.
+### 1.6 What is ER (Entity-Relationship) Modeling?
+- A high-level conceptual data model used to capture the requirements of a database.
+- **Goal**: Identify Entities (nouns), Attributes (adjectives), and Relationships (verbs).
+- **Mapping**: Entities become tables, attributes become columns, and identifiers become primary keys.
 
-### What is the difference between Logical and Physical Schema design?
-- **Logical**: tables, columns, data types, constraints, views, normalization, naming, governance.
-- **Physical**: indexing strategy, partitioning (range, list, hash), fill factor, compression/columnstore, filegroups/tablespaces, autovacuum/VACUUM, stats.
-- **Flow**: model → normalize → validate workloads → add indexes/partitions/materializations → iterate.
+### 1.7 What are the types of Relationships (1:1, 1:N, M:N)?
+- **1:1**: One row in Table A relates to exactly one in Table B. Often merged or linked via unique Foreign Key.
+- **1:N**: One row in Table A relates to many in Table B. Requires a Foreign Key on the "N" side.
+- **M:N**: Many rows in Table A relate to many in Table B. Requires a **Junction/Bridge Table** with two Foreign Keys.
 
-[Back to Top](#table-of-contents)
-
----
-
-## 2. Data Types
-
-### What are the guiding principles for choosing Data Types?
-- Choose the narrowest type; match units and precision; avoid over-wide VARCHAR; prefer DATE/TIMESTAMP over strings.
-
-### What are the common Numeric data types?
-- **INT/SMALLINT/BIGINT**: whole numbers; choose the smallest that fits to reduce I/O and index size.
-- **DECIMAL/NUMERIC(p,s)**: exact fixed-point; use for money and precise totals; beware `s` for scale.
-- **FLOAT/REAL/DOUBLE**: approximate; avoid for money; good for scientific measurements.
-- **Pitfalls**: implicit casts hurt SARGability; mismatched types between JOIN/WHERE hinder index use.
-
-### What are String data types and what is Collation?
-- **CHAR(n)**: fixed-width; pad with spaces; use for stable-length codes only.
-- **VARCHAR(n)**: variable; prefer over CHAR for most text; size `n` gates validation.
-- **TEXT/CLOB**: long text; limited indexing; use full-text indexes for search.
-- **Collation**: sort/compare rules; case and accent sensitivity affect DISTINCT, ORDER BY, JOINs.
-
-### How are Date and Time handled in RDBMS?
-- DATE, TIME, TIMESTAMP/DATETIME; WITH TIME ZONE variants are vendor-specific; INTERVAL types in some vendors.
-- **Guidelines**: store UTC; convert at edges; use proper types for durations; avoid string dates.
-- **Gotchas**: DST transitions; implicit conversions; precision differences (e.g., datetime vs datetime2).
-
-### What are Boolean / BIT types?
-- TRUE/FALSE (PostgreSQL), 0/1 (MySQL TINYINT), BIT (SQL Server). Normalize semantics in app.
-
-### What are Binary data types?
-- BINARY/VARBINARY, BYTEA; good for hashes/small binaries; large objects often better in object storage.
-
-### How is Semi‑structured data (JSON/XML) handled?
-- JSON/JSONB (PostgreSQL), JSON (MySQL), SQL Server JSON functions; XML types.
-- **Indexing**: GIN (jsonb) in PG; generated columns + B‑tree in MySQL; PATH/secondary indexes in others.
-- **Validation**: CHECK constraints, JSON schema features (PG extensions), or app-level checks.
-
-### What is the quick guide for choosing Data Types?
-- **IDs**: BIGINT identity/serial or UUID (prefer v7 over v4 for index locality where available).
-- **Money**: DECIMAL(19,4) exact types, not FLOAT.
-- **Text search**: TEXT + full‑text index; avoid leading‑wildcard LIKE.
-- **Analytics**: columnstore + compressed types for scans.
+### 1.8 What is the difference between Logical and Physical Schema?
+- **Logical Schema**: Focuses on data organization (tables, columns, normalization, naming conventions).
+- **Physical Schema**: Focuses on performance and storage (indexing, partitioning, compression, filegroups, tablespaces).
 
 [Back to Top](#table-of-contents)
 
 ---
 
-## 3. Schema, Catalog & Nullability
+## 2. Data Types & Storage
 
-### What are Schema and Catalog?
-- **Schema**: namespace for objects; simplifies permissions and organization.
-- **Catalog/Database**: groups schemas; qualify names as catalog.schema.object per vendor.
-- **Cross‑database references**: vary (e.g., SQL Server three‑part names; PostgreSQL favors schemas within one database).
+### 2.1 What are the principles for choosing Data Types?
+- **Narrowest Type**: Choose the smallest size that fits the data to reduce I/O.
+- **Consistency**: Match units (e.g., USD, grams) and precision across the system.
+- **Native Types**: Prefer native types (DATE/TIMESTAMP) over strings to enable indexing and date math.
 
-### What is Nullability and Three-valued Logic?
-- NULL propagates to UNKNOWN in predicates; WHERE filters UNKNOWN; watch NULLs in outer joins and aggregates.
-- **Tools**: IS NULL/IS NOT NULL, COALESCE/ISNULL/IFNULL, NULLIF, SET DEFAULT, CHECK/NOT NULL.
-- **Tip**: Prefer NOT NULL with sensible DEFAULTs to simplify logic and improve index selectivity.
+### 2.2 Numeric Data Types: INT, DECIMAL, vs FLOAT
+- **INT/BIGINT**: For whole numbers and primary keys.
+- **DECIMAL(p,s)**: Exact fixed-point for money and precise calculations.
+- **FLOAT/DOUBLE**: Approximate precision for scientific measurements; **never use for money**.
 
-### What is the difference between OLTP and OLAP?
-- **OLTP**: high concurrency, short transactions, low latency; normalized 3NF/BCNF; B‑tree indexes; rowstore engines.
-- **OLAP**: scans, aggregates, star/snowflake; columnstore indexes; partitioning; batch ETL/ELT; materialized views.
-- **Bridging**: CDC to warehouse, HTAP systems, summary tables.
+### 2.3 String Data Types & Collation (CHAR vs VARCHAR)
+- **CHAR(n)**: Fixed-width; pads with spaces. Use for stable-length codes (e.g., ISO Country Codes).
+- **VARCHAR(n)**: Variable-width. Use for most text. `n` restricts the max length.
+- **Collation**: Rules for sorting and comparing characters (e.g., Case Sensitivity, Accent Sensitivity).
 
-[Back to Top](#table-of-contents)
+### 2.4 Handling Date, Time, and Timezones
+- **DATE**: YYYY-MM-DD.
+- **TIMESTAMP/DATETIME**: Includes time component.
+- **Best Practice**: Always store dates in **UTC** at the database level and convert to the user's timezone at the application/UI level.
 
----
+### 2.5 Working with Semi-structured Data (JSON/XML)
+- Modern RDBMS (PostgreSQL, SQL Server, MySQL) support JSON types.
+- **JSONB** (PostgreSQL): Binary format that is indexable via GIN indexes.
+- **Use Case**: Great for flexible schemas or sparse attributes, but avoid for core relational data to maintain 1NF.
 
-## 4. Keys & Constraints
+### 2.6 Choosing Primary Key Types: BIGINT vs UUID
+- **BIGINT**: High performance, ever-increasing (good for B-Tree locality), but exposes record counts.
+- **UUID (v7)**: Globally unique, non-sequential (though v7 is time-ordered), hides record counts, but wider (16 bytes vs 8).
 
-### What is a Primary Key?
-- **Definition**: Column or set of columns that uniquely identifies each row. Must be UNIQUE and NOT NULL. One per table.
-- **Surrogate vs Natural**: Surrogate (IDENTITY/SEQUENCE/UUID) is stable and narrow; Natural uses domain attributes but can change.
-- **Entity Integrity**: ensure every row is identifiable.
+### 2.7 Three-Valued Logic and NULL Handling
+- SQL uses **TRUE, FALSE, and UNKNOWN**.
+- `NULL = NULL` is UNKNOWN, not TRUE.
+- **Tip**: Prefer `NOT NULL` with sensible defaults (e.g., `0`) to simplify application logic and improve index selectivity.
 
-### What is a Foreign Key?
-- **Definition**: Column(s) referencing a parent table’s PK or UNIQUE key to enforce referential integrity.
-- **Actions**: NO ACTION/RESTRICT, CASCADE, SET NULL, SET DEFAULT.
-- **Referential Integrity**: ensure relationships are consistent across tables.
-
-### What is a Unique Key?
-- **Definition**: Enforces uniqueness of values across rows. Unlike PK, it may allow NULLs depending on the vendor.
-- **Use Case**: Use UNIQUE(email) for natural identifiers even when using surrogate PK.
-
-### What is the difference between Natural Key and Surrogate Key?
-- **Natural**: Derived from business data. Pro: inherent meaning. Con: can change, wider.
-- **Surrogate**: Artificial (ID). Pro: stable, narrow. Con: needs additional UNIQUE for business rules.
-
-### What are Candidate, Alternate, and Super Keys?
-- **Candidate Key**: Minimal column set that can uniquely identify rows.
-- **Alternate Key**: Candidate key not chosen as PK.
-- **Super Key**: Any superset of a candidate key.
-
-### What are Composite Keys?
-- **Definition**: Multi-column keys (PK or UNIQUE).
-- **Ordering**: Leftmost prefix rule applies for index performance.
-
-### What are Check Constraints?
-- **Definition**: Boolean expressions that must be TRUE for each row.
-- **Example**: `CHECK (age BETWEEN 0 AND 120)`. Part of **Domain Integrity**.
-
-### What are Default and NOT NULL constraints?
-- **DEFAULT**: Provides a value when none is supplied on INSERT.
-- **NOT NULL**: Disallows NULL values. Prefer combining with sensible defaults.
-
-### What are enforcement tips for constraints?
-- Prefer constraints over triggers for validation; they are declarative and optimized.
+### 2.8 Binary Data Types: BLOB and BYTEA
+- Used for storing small binaries (hashes, salt) or smaller images.
+- **Tip**: For large files (MP4s, high-res images), store them in Object Storage (S3/Azure Blob) and store only the URL/Path in the database.
 
 [Back to Top](#table-of-contents)
 
 ---
 
-## 5. Normalization & Denormalization
+## 3. Constraints & Integrity
 
-### What is the purpose and benefit of Normalization?
-- **Goal**: Reduce redundancy, prevent anomalies (Insertion, Update, Deletion), and ensure each fact is stored once.
+### 3.1 What is Entity Integrity (Primary Keys)?
+- Ensures that every row in a table is uniquely identifiable and that the primary key is never NULL.
+- **Surrogate PK**: Artificial ID (Serial/Auto-increment).
+- **Natural PK**: Real-world unique identifier (e.g., SSN, Email) - risky if business rules change.
 
-### What are Functional Dependencies (FDs)?
-- **Definition**: X → Y means X functionally determines Y. Used to derive keys and decide on decompositions.
+### 3.2 What is Referential Integrity (Foreign Keys)?
+- Ensures that the relationship between two tables remains consistent. A Foreign Key in a child table must exist as a Primary Key in the parent table.
 
-### Explain the various Normal Forms (1NF to 5NF).
-- **1NF**: Atomic values only, no repeating groups.
-- **2NF**: No partial dependencies (on composite keys).
-- **3NF**: No transitive dependencies. "Depends on key, whole key, nothing but the key."
-- **BCNF**: Stricter version of 3NF where every determinant is a super key.
-- **4NF**: Handles multi-valued dependencies.
-- **5NF**: Handles join dependencies.
+### 3.3 Foreign Key Actions: CASCADE, SET NULL, RESTRICT
+- **CASCADE**: Deleting/Updating parent also deletes/updates children.
+- **SET NULL**: Parent deletion sets child FK to NULL.
+- **RESTRICT/NO ACTION**: Prevents deletion of the parent if children exist.
 
-### What are Database Anomalies?
-- **Insertion**: Cannot add data without unrelated facts.
-- **Update**: Risk of inconsistency when updating redundant data.
-- **Deletion**: Unintentional loss of data when deleting a related fact.
+### 3.4 What is Domain Integrity? (CHECK, DEFAULT, NOT NULL)
+- **CHECK**: Enforces custom rules (e.g., `CHECK (price > 0)`).
+- **DEFAULT**: Provides a value if none is supplied.
+- **NOT NULL**: Prevents missing data.
 
-### What is Denormalization and when should it be used?
-- **Purpose**: Speed up reads, reduce joins, enable precomputed aggregates.
-- **Trade-off**: Write amplification, storage overhead, and consistency complexity.
+### 3.5 Unique Constraints and Business Identifiers
+- Enforces that all values in a column are unique.
+- Useful for columns that aren't the Primary Key but must be distinct, like Usernames or Passport Numbers.
 
-### What is a quick workflow for Normalization?
-1. List attributes and candidate keys.
-2. Elicit FDs and find minimal cover.
-3. Ensure 1NF -> 2NF -> 3NF.
-4. Add constraints and indexes.
-5. Consider targeted denormalization for hotspots.
+### 3.6 Assertion and Triggers vs Constraints
+- **Constraints**: Declarative, fast, and optimized by the engine.
+- **Triggers**: Procedural, slower, and harder to debug. Use constraints whenever possible.
 
 [Back to Top](#table-of-contents)
 
 ---
 
-## 6. ACID, BASE, and CAP
+## 4. Normalization Deep Dive
 
-### What are ACID properties?
+### 4.1 What is the purpose of Normalization?
+- Goal: **Reduce redundancy**, prevent integrity anomalies, and ensure each "fact" is stored exactly once.
+
+### 4.2 What are Functional Dependencies (FDs)?
+- If column A determines column B (`A -> B`), then for every value of A, there is one and only one value of B. This is the foundation of normalization.
+
+### 4.3 1NF: Atomic Values and Repeating Groups
+- No multi-valued attributes (arrays, comma-separated lists).
+- Each column must contain atomic (indivisible) values.
+
+### 4.4 2NF: Removing Partial Dependencies
+- Applies to composite primary keys. No non-key attribute should depend on only a *part* of a composite key.
+
+### 4.5 3NF: Removing Transitive Dependencies
+- No non-key attribute should depend on another non-key attribute. "Attributes must depend on the key, the whole key, and nothing but the key."
+
+### 4.6 BCNF: Boyce–Codd Normal Form
+- A stricter version of 3NF. For every functional dependency `X -> Y`, `X` must be a super key.
+
+### 4.7 4NF: Multi-valued Dependencies (MVDs)
+- Removes independent multi-valued facts. For example, if a "Chef" has multiple "Specialties" AND multiple "Languages", these should be in separate tables.
+
+### 4.8 5NF: Join Dependencies (PJ/NF)
+- A table is in 5NF if it cannot be decomposed into smaller tables that, when joined back, produce spurious rows.
+
+### 4.9 What are Database Anomalies?
+- **Insertion**: Can't add a student unless they join a course.
+- **Update**: Changing a course name requires updating 1000 student rows.
+- **Deletion**: Deleting the last student in a course accidentally deletes the course info.
+
+### 4.10 Denormalization: When and Why?
+- Used to speed up reads in reporting/OLAP environments by reducing the number of joins.
+- **Costs**: Slower writes, increased storage, and risk of data inconsistency.
+
+### 4.11 Standard Normalization Workflow
+1. Identify all functional dependencies.
+2. Break into 1NF (atomicity).
+3. Break into 2NF (remove partial dependencies).
+4. Break into 3NF (remove transitive dependencies).
+5. Refine into BCNF/4NF if complex relationships exist.
+
+[Back to Top](#table-of-contents)
+
+---
+
+## 5. Transactions & Concurrency
+
+### 5.1 ACID Properties Deep Dive
 - **Atomicity**: All or nothing.
-- **Consistency**: Moves DB from one valid state to another.
+- **Consistency**: Database moves from one valid state to another.
 - **Isolation**: Concurrent transactions don't interfere.
-- **Durability**: Committed changes survive crashes (WAL).
+- **Durability**: Committed data is permanent.
 
-### What are the different Transaction Isolation Levels?
-- **Read Uncommitted**: Allows dirty reads.
-- **Read Committed**: Prevents dirty reads (Default for many).
-- **Repeatable Read**: Prevents non-repeatable reads.
-- **Serializable**: Highest isolation, prevents phantoms.
-- **Snapshot Isolation**: MVCC-based consistency without blocking readers.
+### 5.2 Atomicity: Rollback and WAL
+- Guaranteed via **Write-Ahead Logging (WAL)**. Changes are written to the log first; if a crash occurs, the DB uses the log to redo or undo changes.
 
-### What are the common Isolation Phenomena (Anomalies)?
+### 5.3 Consistency: Database State Invariants
+- Enforced through constraints (PK, FK, CHECK). If a transaction violates a constraint, the whole transaction is rolled back to maintain consistency.
+
+### 5.4 Isolation Levels and ANSI Standards
+- **Read Uncommitted**: See uncommitted data (Dirty Read).
+- **Read Committed**: Only see committed data (Default).
+- **Repeatable Read**: Re-reading a row gives the same result.
+- **Serializable**: Full sequential execution behavior.
+
+### 5.5 Isolation Phenomena: Dirty Read, Phantoms, Write Skew
 - **Dirty Read**: Reading uncommitted data.
-- **Non-repeatable Read**: Value changes between two reads in the same transaction.
-- **Phantom Read**: Set of rows changes between reads.
-- **Lost Update**: Two writers overwrite each other.
-- **Write Skew**: Snapshot isolation anomaly where two transactions overlap inconsistently.
+- **Non-Repeatable Read**: Row value changes between two reads.
+- **Phantom Read**: New rows appear in a range query.
+- **Write Skew**: A concurrency anomaly where two transactions overlap and result in a logically invalid state (common in Snapshot Isolation).
 
-### What is BASE and Eventual Consistency?
-- **Basically Available**, **Soft State**, **Eventual Consistency**.
-- Used in distributed systems for high availability and low latency at the cost of immediate consistency.
+### 5.6 Durability: Disk Flushing and Checkpoints
+- Commits are only acknowledged once the log is flushed to physical disk. **Checkpoints** periodically sync the data files with the log to speed up recovery.
 
-### What is the CAP Theorem?
-- In the presence of a **Network Partition (P)**, you must choose between **Consistency (C)** and **Availability (A)**.
+### 5.7 What is MVCC (Multi-Version Concurrency Control)?
+- A method to allow readers and writers to operate without blocking each other. Each reader sees a "snapshot" (version) of the data from the time the transaction started.
 
-[Back to Top](#table-of-contents)
+### 5.8 Locking Mechanisms: S, X, U, and Intent Locks
+- **Shared (S)**: For reading.
+- **Exclusive (X)**: For writing.
+- **Update (U)**: Prevents deadlocks during read-then-write operations.
+- **Intent Locks**: Signal that a lower-level (row) lock is held.
 
----
+### 5.9 Deadlocks: Detection and Resolution
+- A cycle where Transaction A waits for B, and B waits for A.
+- **Resolution**: The DB engine detects the cycle and "kills" one transaction (the victim) to let the other proceed.
 
-## 7. Indexing
+### 5.10 Optimistic vs Pessimistic Concurrency
+- **Pessimistic**: Locks data immediately. Good for high write contention.
+- **Optimistic**: No initial locks; checks for changes at commit time (using a version/timestamp). Good for read-heavy apps.
 
-### How do Indexes work?
-- Speed up lookups and joins by maintaining ordered structures (B-Trees) over key columns.
-- **Selectivity**: High selectivity (unique values) makes indexes efficient.
+### 5.11 BASE and Eventual Consistency
+- **Basically Available, Soft state, Eventual consistency**. 
+- Prioritizes availability and performance over immediate consistency in distributed systems.
 
-### What are common Index Structures (B-Tree, B+Tree)?
-- **B-Tree**: Balanced trees.
-- **B+Tree**: Data only in leaves, linked for efficient range scans.
-
-### What are Clustered and Non-Clustered Indexes?
-- **Clustered**: Tables stored in index order (one per table).
-- **Non-Clustered**: Pointers to rows or clustered keys (many per table).
-- **Covering Index**: Answers query entirely from index (`INCLUDE` columns).
-
-### What are key Performance Concepts in Indexing?
-- **Index Seek**: Targeted lookup.
-- **Index Scan**: Full walk of the index.
-- **SARGability**: Predicates that can use indexes (avoid functions on columns).
-- **Fragmentation**: Requires rebuild/reorganize maintenance.
+### 5.12 The CAP Theorem for Distributed Databases
+- You can only have 2 of 3: **Consistency, Availability, and Partition Tolerance**. Since Partition Tolerance is mandatory in networks, you must choose between C and A.
 
 [Back to Top](#table-of-contents)
 
 ---
 
-## 8. Transaction Management & Concurrency
+## 6. Indexing & Performance
 
-### What is the Transaction Lifecycle?
-- **BEGIN** -> **Operations** -> **COMMIT** or **ROLLBACK**.
-- **SAVEPOINT**: Partial rollbacks within a transaction.
+### 6.1 How do Indexes work?
+- Indexes are secondary data structures (usually B-Trees) that allow the engine to find rows without scanning the entire table.
 
-### What is MVCC?
-- **Multi-Version Concurrency Control**. Writers don't block readers; readers don't block writers. Uses versions (xid/undo) to maintain consistency.
+### 6.2 B-Tree vs B+Tree Index Structures
+- **B-Tree**: Keys and values are stored in all nodes.
+- **B+Tree**: Values only in leaf nodes; leaves are linked for extremely fast range scans. **Standard for RDBMS.**
 
-### What are the different Locking modes and granularities?
-- **Modes**: Shared (S), Exclusive (X), Update (U), Intent Locks.
-- **Granularity**: Row, Page, Table.
-- **Deadlock**: Cycle of dependencies. Prevent by consistent access order and indexing.
+### 6.3 Clustered vs Non-Clustered Indexes
+- **Clustered**: Tables are stored physically in the index's order. Only one per table.
+- **Non-Clustered**: A separate list of pointers to the actual data rows.
 
-### What is the difference between Optimistic and Pessimistic Concurrency?
-- **Pessimistic**: Prevents conflicts with locks. Best for high write contention.
-- **Optimistic**: Detects conflicts at commit (versions). Best for read-heavy workloads.
+### 6.4 Composite Indexes: The Leftmost Prefix Rule
+- An index on `(FirstName, LastName)` can be used for searches on `FirstName` or `FirstName + LastName`, but **not** `LastName` alone.
+
+### 6.5 What is a Covering Index?
+- A Non-Clustered index that includes all the columns requested in a query (via `INCLUDE` in SQL Server). The engine never has to "look up" the main table.
+
+### 6.6 SARGability: Writing Index-Optimized Queries
+- **Search ARGument-able**. 
+- **BAD**: `WHERE UPPER(Email) = 'FOO@BAR.COM'` (Function prevents index use).
+- **GOOD**: `WHERE Email = 'foo@bar.com'`.
+
+### 6.7 Full-Text Search and Specialized Indexes (GIN/GiST)
+- **Full-Text**: Linguistic search (stemming, ranking).
+- **GIN (Generalized Inverted Index)**: Used for arrays and JSONB containment.
+- **GiST**: Used for geometric and range data.
+
+### 6.8 Index Fragmentation and Maintenance
+- Over time, page splits cause indexes to become fragmented. Regular **Rebuild** (offline/online) or **Reorganize** (low impact) is required.
 
 [Back to Top](#table-of-contents)
 
 ---
 
-## 9. Database Design Patterns
+## 7. Database Design Patterns (OLAP)
 
-### Explain Star and Snowflake Schemas.
-- **Star**: Central Fact table with denormalized Dimension tables.
-- **Snowflake**: Normalized dimensions (reduces redundancy, adds joins).
+### 7.1 OLTP vs OLAP Architecture
+- **OLTP (Online Transaction Processing)**: Normalized, many small writes/reads, current state.
+- **OLAP (Online Analytical Processing)**: Denormalized, massive scans, historical data, aggregates.
 
-### What are the different types of Fact Tables?
-- **Transaction Fact**: One row per event.
-- **Periodic Snapshot**: Summaries at intervals.
-- **Accumulating Snapshot**: Tracks lifecycle stages.
+### 7.2 Star Schema: Facts and Dimensions
+- A central **Fact Table** (numbers) joined to multiple **Dimension Tables** (descriptions).
+- Simplest and fastest for most BI tools.
 
-### What are Junk, Degenerate, and Bridge Dimensions?
-- **Junk**: Grouping low-cardinality flags.
-- **Degenerate**: ID stored in fact table (no dim table).
-- **Bridge**: Resolves Many-to-Many relationships.
+### 7.3 Snowflake Schema: Normalized Dimensions
+- Dimension tables are themselves normalized.
+- Saves space but adds join complexity and can slow down query performance.
 
-### What are Slowly Changing Dimensions (SCD Types 1, 2, 3)?
-- **Type 1**: Overwrite history.
-- **Type 2**: Add new row (full history).
-- **Type 3**: Add "previous value" column (limited history).
+### 7.4 Fact Tables: Transactional vs Snapshot
+- **Transactional**: Record every event (e.g., every single sale).
+- **Periodic Snapshot**: Summarize state at intervals (e.g., end-of-day bank balance).
 
-### What is the difference between Operational and Analytical databases?
-- **OLTP**: Normalized (3NF), current state, low latency.
-- **OLAP**: Denormalized (Star/Snowflake), historical snapshots, massive aggregates.
+### 7.5 Dimension Types: Junk, Degenerate, Bridge
+- **Junk**: Combine low-cardinality flags (e.g., is_active, gender) into one table.
+- **Degenerate**: Storing an ID (like Invoice_No) directly in the Fact table without a dim table.
+- **Bridge**: Used for Many-to-Many relationships in dimensions (e.g., one Book has many Authors).
+
+### 7.6 SCD Types 1, 2, and 3 (Slowly Changing Dimensions)
+- **Type 1**: Overwrite (e.g., fixing a typo). No history.
+- **Type 2**: Add a new row with `Eff_Date` and `End_Date`. Full history tracking.
+- **Type 3**: Add a "PreviousValue" column. Limited history.
 
 [Back to Top](#table-of-contents)
