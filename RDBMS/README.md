@@ -56,8 +56,12 @@ Welcome to the RDBMS Interview Questions repository. This guide consists of 50+ 
 - 5.8 [Locking Mechanisms: S, X, U, and Intent Locks](#58-locking-mechanisms-s-x-u-and-intent-locks)
 - 5.9 [Deadlocks: Detection and Resolution](#59-deadlocks-detection-and-resolution)
 - 5.10 [Optimistic vs Pessimistic Concurrency](#510-optimistic-vs-pessimistic-concurrency)
-- 5.11 [BASE and Eventual Consistency](#511-base-and-eventual-consistency)
-- 5.12 [The CAP Theorem for Distributed Databases](#512-the-cap-theorem-for-distributed-databases)
+- 5.11 [What is the CAP Theorem?](#511-what-is-the-cap-theorem)
+- 5.12 [Why is Partition Tolerance mandatory in Distributed Systems?](#512-why-is-partition-tolerance-mandatory-in-distributed-systems)
+- 5.13 [Detailed Comparison: CP vs AP Systems](#513-detailed-comparison-cp-vs-ap-systems)
+- 5.14 [What is the BASE Model?](#514-what-is-the-base-model)
+- 5.15 [Strong Consistency vs Eventual Consistency](#515-strong-consistency-vs-eventual-consistency)
+- 5.16 [What is the PACELC Theorem?](#516-what-is-the-pacelc-theorem)
 
 ### 6. Indexing & Performance
 - 6.1 [How do Indexes work?](#61-how-do-indexes-work)
@@ -295,12 +299,41 @@ Welcome to the RDBMS Interview Questions repository. This guide consists of 50+ 
 - **Pessimistic**: Locks data immediately. Good for high write contention.
 - **Optimistic**: No initial locks; checks for changes at commit time (using a version/timestamp). Good for read-heavy apps.
 
-### 5.11 BASE and Eventual Consistency
-- **Basically Available, Soft state, Eventual consistency**. 
-- Prioritizes availability and performance over immediate consistency in distributed systems.
+### 5.11 What is the CAP Theorem?
+- **Consistency**: Every read receives the most recent write or an error.
+- **Availability**: Every request receives a (non-error) response, without the guarantee that it contains the most recent write.
+- **Partition Tolerance**: The system continues to operate despite an arbitrary number of messages being dropped or delayed by the network between nodes.
+- **The Trade-off**: In a distributed system, partitions (P) are inevitable (network failures). Therefore, when a partition occurs, you must choose between C (Stop serving requests to stay consistent) or A (Serve potentially stale data to stay available).
 
-### 5.12 The CAP Theorem for Distributed Databases
-- You can only have 2 of 3: **Consistency, Availability, and Partition Tolerance**. Since Partition Tolerance is mandatory in networks, you must choose between C and A.
+### 5.12 Why is Partition Tolerance mandatory in Distributed Systems?
+- Networks are unreliable. You cannot guarantee perfect communication between nodes.
+- Since P is a given, the real choice is between **CP** (Consistency over Availability) and **AP** (Availability over Consistency).
+
+### 5.13 Detailed Comparison: CP vs AP Systems
+- **CP (Consistency / Partition Tolerance)**:
+    - **Behavior**: When a partition occurs, the system protects consistency. It may reject writes or reads if it cannot guarantee the data is up-to-date.
+    - **Examples**: HBase, MongoDB (default), Redis (Sentinel/Cluster), RDBMS with synchronous replication.
+    - **Use Case**: Financial systems, Inventory management (double-booking is unacceptable).
+- **AP (Availability / Partition Tolerance)**:
+    - **Behavior**: Prioritizes uptime. Nodes accept writes even if they cannot communicate with peers. Data reconciles later.
+    - **Examples**: Cassandra, DynamoDB, Couchbase, DNS.
+    - **Use Case**: Social media feeds, Shopping carts, Real-time analytics where staleness is tolerable.
+
+### 5.14 What is the BASE Model?
+- **Basically Available**: The system guarantees availability (often using replication).
+- **Soft State**: The state of the system may change over time, even without input (due to background syncing).
+- **Eventual Consistency**: The system will stop changing and become consistent once it stops receiving input.
+- **Contrast**: BASE is the philosophy for AP systems, while ACID is for CP/Single-node systems.
+
+### 5.15 Strong Consistency vs Eventual Consistency
+- **Strong Consistency**: Linearity. After a write is acknowledged, any subsequent read (from any node) returns that value.
+- **Eventual Consistency**: After a write, reads may return stale values for a short period (inconsistency window), but all nodes will eventually converge.
+- **Read-Your-Writes**: A consistency model where a user always sees their own updates, even if other users see stale data.
+
+### 5.16 What is the PACELC Theorem?
+- An extension to CAP describing trade-offs during *normal* operations.
+- **Statement**: If there is a Partition (P), choose between Availability (A) and Consistency (C). **Else (E)** (no partition), choose between Latency (L) and Consistency (C).
+- **Significance**: CAP only explains failure modes. PACELC explains why synchronous replication (Consistency) slows down the system (Latency) even when the network is fine.
 
 [Back to Top](#table-of-contents)
 
